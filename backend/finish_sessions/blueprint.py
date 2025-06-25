@@ -14,7 +14,6 @@ from Postgres.session_ending import (
     finish_session,
 )
 from .insights import get_insights
-from MSAL.search import add_to_list
 
 blueprint = func.Blueprint()
 
@@ -35,7 +34,6 @@ def finish_sessions(
         for s in sessions_to_finish:
             analysis = get_insights(s)
             logging.info("Analysis of session %s: %s", s[0], analysis)
-            add_to_list(analysis)
-            logging.info("Analysis Added to Sharepoint")
+        
             finish_session(conn, s)
             logging.info("Session %s finished", s[0])
