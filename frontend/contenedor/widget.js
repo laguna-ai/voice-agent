@@ -20,7 +20,7 @@ export function initializeWidget() {
     let isTyping = false;
     let suggestionsVisible = false;
     let chatHistory = [];
-    const CHATBOT_API_URL = 'https://funciones-agente.azurewebsites.net/api/webhook';
+    const CHATBOT_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/webhook';
     const sessionId = getOrGenerateSessionId();
     
     const initialMessages = [
