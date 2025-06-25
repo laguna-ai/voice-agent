@@ -82,3 +82,13 @@ export function initWidget(config) {
         document.documentElement.style.setProperty('--color-secondary-600', config.secondaryColor);
     }
 }
+
+// Función para reproducir audio desde un blob
+export function playAudioFromBlob(audioBlob) {
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+    audio.onended = () => {
+        URL.revokeObjectURL(audioUrl);
+    };
+}

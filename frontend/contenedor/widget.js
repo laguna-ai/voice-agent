@@ -1,7 +1,7 @@
 // widget/widget.js
 
-import { getOrGenerateSessionId, sendMessageToBot } from './apiService.js';
-import { addMessage, showTypingIndicator, hideTypingIndicator, initWidget } from './domUtils.js';
+import { getOrGenerateSessionId, sendMessageToBot, sendAudioToWhisper, getTTSFromText } from './apiService.js';
+import { addMessage, showTypingIndicator, hideTypingIndicator, initWidget, playAudioFromBlob } from './domUtils.js';
 
 export function initializeWidget() {
     // DOM Elements
@@ -15,12 +15,18 @@ export function initializeWidget() {
     const quickSuggestions = document.getElementById('quick-suggestions');
     const suggestionBtns = document.querySelectorAll('.suggestion-btn');
     const resetSessionBtn = document.getElementById('reset-session');
+    const micButton = document.getElementById('mic-button');
+    let mediaRecorder = null;
+    let audioChunks = [];
 
     // Estado
     let isTyping = false;
     let suggestionsVisible = false;
     let chatHistory = [];
     const CHATBOT_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/webhook';
+    const TTS_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/tts';
+    const WHISPER_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/whisper';
+    
     const sessionId = getOrGenerateSessionId();
     
     const initialMessages = [
@@ -79,6 +85,83 @@ export function initializeWidget() {
         });
     }
     
+    // --- Lógica de micrófono ---
+    if (micButton) {
+        micButton.addEventListener('click', async function() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                micButton.classList.remove('bg-red-600');
+                micButton.classList.add('bg-primary-500');
+                return;
+            }
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('Tu navegador no soporta grabación de audio');
+                return;
+            }
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new window.MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) audioChunks.push(e.data);
+                };
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    // Mostrar mensaje de "transcribiendo..."
+                    addMessage('Transcribiendo audio...', 'user', chatMessages);
+                    showTypingIndicator(typingIndicator, chatMessages);
+                    isTyping = true;
+                    try {
+                        const transcribedText = await sendAudioToWhisper(audioBlob, WHISPER_API_URL);
+                        // El texto transcrito se procesa como input normal
+                        addMessage(transcribedText, 'user', chatMessages);
+                        await handleBotResponse(transcribedText);
+                    } catch (err) {
+                        addMessage('No se pudo transcribir el audio.', 'bot', chatMessages);
+                    } finally {
+                        hideTypingIndicator(typingIndicator);
+                        isTyping = false;
+                    }
+                };
+                mediaRecorder.start();
+                micButton.classList.remove('bg-primary-500');
+                micButton.classList.add('bg-red-600');
+            } catch (err) {
+                alert('No se pudo acceder al micrófono.');
+            }
+        });
+    }
+
+    // --- Lógica para manejar respuesta del bot y reproducir TTS ---
+    async function handleBotResponse(message) {
+        // Show typing indicator
+        showTypingIndicator(typingIndicator, chatMessages);
+        isTyping = true;
+        try {
+            const { botMessage, updatedHistory } = await sendMessageToBot(
+                message,
+                sessionId,
+                CHATBOT_API_URL,
+                chatHistory
+            );
+            chatHistory = updatedHistory;
+            addMessage(botMessage, 'bot', chatMessages);
+            // Pedir audio TTS y reproducirlo
+            try {
+                const audioBlob = await getTTSFromText(botMessage, TTS_API_URL);
+                playAudioFromBlob(audioBlob);
+            } catch (err) {
+                // Si falla el TTS, solo mostrar texto
+            }
+        } catch (error) {
+            addMessage('Error de conexión. Por favor, intenta de nuevo.', 'bot', chatMessages);
+        } finally {
+            hideTypingIndicator(typingIndicator);
+            isTyping = false;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+
     // Send Message
     async function sendMessage() {
         const message = userInput.value.trim();
@@ -95,34 +178,7 @@ export function initializeWidget() {
             suggestionsToggle.innerHTML = '<i class="fas fa-lightbulb mr-1"></i> Sugerencias';
         }
         
-        // Show typing indicator
-        isTyping = true;
-        showTypingIndicator(typingIndicator, chatMessages);
-        
-        try {
-            // Send message to API
-            const { botMessage, updatedHistory } = await sendMessageToBot(
-                message, 
-                sessionId, 
-                CHATBOT_API_URL, 
-                chatHistory
-            );
-            
-            // Update chat history
-            chatHistory = updatedHistory;
-            
-            // Add bot response to chat
-            addMessage(botMessage, 'bot', chatMessages);
-            
-        } catch (error) {
-            console.error('Error sending message:', error);
-            addMessage('Error de conexión. Por favor, intenta de nuevo.', 'bot', chatMessages);
-        } finally {
-            // Hide typing indicator
-            hideTypingIndicator(typingIndicator);
-            isTyping = false;
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+        await handleBotResponse(message);
     }
     
     // Handle suggestion button clicks

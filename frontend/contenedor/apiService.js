@@ -80,3 +80,28 @@ export async function sendMessageToBot(userMessage, sessionId, apiUrl, chatHisto
         };
     }
 }
+
+export async function sendAudioToWhisper(audioBlob, whisperUrl) {
+    const formData = new FormData();
+    formData.append('file', audioBlob, 'audio.webm');
+    const response = await fetch(whisperUrl, {
+        method: 'POST',
+        body: formData
+    });
+    if (!response.ok) {
+        throw new Error('Error al transcribir audio');
+    }
+    return await response.text();
+}
+
+export async function getTTSFromText(text, ttsUrl) {
+    const response = await fetch(ttsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+    });
+    if (!response.ok) {
+        throw new Error('Error al obtener audio TTS');
+    }
+    return await response.blob();
+}
