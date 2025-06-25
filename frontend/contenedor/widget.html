@@ -1,0 +1,91 @@
+<!-- Contenido del widget -->
+<div id="chatbot-window" class="w-full h-full flex flex-col border border-primary-200 rounded-xl shadow-lg overflow-hidden">
+    <!-- Chat Header -->
+    <div class="bg-gradient-to-r from-primary-600 to-primary-800 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-white border border-primary-200 flex items-center justify-center mr-2 text-lg">
+                🤖
+            </div>
+            <div>
+                <h3 class="font-semibold">MentIA</h3>
+                <p class="text-xs text-primary-100">En línea</p>
+            </div>
+        </div>
+        <!-- Boton de reinicio de sesión -->
+        <div class="flex items-center space-x-3">
+            <button id="reset-session" title="Reiniciar sesión" class="text-white hover:text-primary-200 transition-colors">
+                <i class="fas fa-rotate-right"></i>
+            </button>
+        </div>
+        <!-- <div class="flex items-center space-x-3">
+            <button id="minimize-chat" class="text-white hover:text-primary-200 transition-colors">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button id="close-chat" class="text-white hover:text-primary-200 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div> -->
+    </div>
+    
+    <!-- Chat Messages -->
+    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto gradient-bg custom-scrollbar">
+        <div class="message-enter mb-4">
+            <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-white border border-primary-200 flex items-center justify-center mr-2 text-lg">
+                    🤖
+                </div>
+                <div class="bg-white p-3 rounded-lg shadow-sm max-w-[80%] border border-primary-100">
+                    <p class="text-gray-800">¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?</p>
+                </div>
+            </div>
+            <div class="text-xs text-primary-500 mt-1 pl-10">Ahora</div>
+        </div>
+    </div>
+    
+    <!-- Typing Indicator -->
+    <div id="typing-indicator" class="hidden px-4 py-2">
+        <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-white border border-primary-200 flex items-center justify-center mr-2 text-lg">
+                🤖
+            </div>
+            <div class="typing-indicator bg-white p-3 rounded-lg shadow-sm border border-primary-100">
+                <span class="text-primary-600">.</span>
+                <span class="text-primary-600">.</span>
+                <span class="text-primary-600">.</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Input Area -->
+    <div class="border-t border-primary-200 p-3 bg-white">
+        <div class="flex items-center">
+            <input id="user-input" type="text" placeholder="Escribe tu mensaje..." 
+                   class="flex-1 border border-primary-200 rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-700 placeholder-primary-300">
+            <button id="send-button" class="bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-r-lg transition-colors">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div class="flex justify-between items-center mt-2">
+            <p class="text-xs text-primary-500">Powered by <span class="font-semibold text-primary-700">Laguna-AI</span></p>
+            <button id="suggestions-toggle" class="text-xs text-primary-600 hover:text-primary-800 flex items-center">
+                <i class="fas fa-lightbulb mr-1"></i> Sugerencias
+            </button>
+        </div>
+        
+        <!-- Quick Suggestions -->
+        <div id="quick-suggestions" class="hidden mt-2 grid grid-cols-2 gap-2">
+            <button class="suggestion-btn bg-primary-50 hover:bg-primary-100 text-primary-700 text-xs py-1 px-2 rounded border border-primary-200 transition-colors truncate">
+                ¿Qué voy a aprender en el curso DI 2.0?
+            </button>
+            <button class="suggestion-btn bg-primary-50 hover:bg-primary-100 text-primary-700 text-xs py-1 px-2 rounded border border-primary-200 transition-colors truncate">
+                ¿Hay clases en vivo o todo es asincrónico?
+            </button>
+            <button class="suggestion-btn bg-primary-50 hover:bg-primary-100 text-primary-700 text-xs py-1 px-2 rounded border border-primary-200 transition-colors truncate">
+                ¿Recibiré un certificado al finalizar el curso?
+            </button>
+            <button class="suggestion-btn bg-primary-50 hover:bg-primary-100 text-primary-700 text-xs py-1 px-2 rounded border border-primary-200 transition-colors truncate">
+                ¿Hay fechas límite para entregar actividades o proyectos?
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentIA - Asistente Educativo | Learnia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',  // Morado muy claro
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',  // Morado principal
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',  // Morado oscuro
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="contenedor/widget.css">
+
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <div>
+                        <h1 class="title">MentIA</h1>
+                        <p class="subtitle">Tu asistente educativo inteligente</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title">Apoyo Académico</h3>
+                    <p class="feature-description">Resuelve dudas sobre materias, conceptos y tareas de forma instantánea.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Aprendizaje Personalizado</h3>
+                    <p class="feature-description">Adapta las explicaciones a tu nivel y estilo de aprendizaje.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Respuestas Inmediatas</h3>
+                    <p class="feature-description">Obtén ayuda las 24 horas, los 7 días de la semana.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Inteligencia Avanzada</h3>
+                    <p class="feature-description">Tecnología de IA especializada en educación y pedagogía.</p>
+                </div>
+            </aside>
+
+            <main class="chat-container">
+                <div class="chat-header">
+                    <h2 style="color: #1f2937; font-size: 1.4rem; font-weight: 600;">Chat con MentIA</h2>
+                    <div class="chat-status">
+                        <div class="status-dot"></div>
+                        En línea
+                    </div>
+                </div>
+
+                <div class="widget-placeholder" id="chatWidget">
+                    <!-- <div class="widget-icon">💬</div>
+                    <h3 class="widget-title">Integra tu Widget de Chat</h3>
+                    <p class="widget-description">
+                        Esta área está lista para recibir el código de tu widget de chat. 
+                        Simplemente reemplaza este contenido con tu implementación.
+                    </p> -->
+                </div>
+
+                <!-- <div class="integration-steps">
+                    <div class="integration-title">Guía de Integración</div>
+                    <div class="integration-step">Copia el código de tu widget de chat</div>
+                    <div class="integration-step">Reemplaza el contenido del div #chatWidget</div>
+                    <div class="integration-step">Ajusta los estilos si es necesario</div>
+                    <div class="integration-step">¡Tu chatbot estará listo para usar!</div>
+                </div> -->
+            </main>
+        </div>
+
+        <footer class="powered-by">
+            Desarrollado con ❤️ para <a href="#" class="learnia-link">Learnia</a> - Plataforma Educativa
+        </footer>
+    </div>
+     <!-- Referencia al archivo JavaScript externo -->
+    <script src="app.js"></script>
+
+    <!-- Cargar el widget -->
+    <script type="module">
+        // Cargar el contenido del widget
+    const loadWidget = async () => {
+        const response = await fetch('contenedor/widget.html');
+        const html = await response.text();
+        const chatWidget = document.getElementById('chatWidget');
+        chatWidget.innerHTML = ''; // Limpia el contenido anterior
+        chatWidget.innerHTML = html;
+        
+        // Importar e inicializar el widget
+        const { initializeWidget } = await import('./contenedor/widget.js');
+        initializeWidget();
+    };
+    
+    loadWidget();
+    </script>
+    
+</body>
+</html>
