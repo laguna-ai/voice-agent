@@ -50,8 +50,6 @@ def get_system_prompt_with_name(name: str) -> str:
     return system_general_prompt + "\n" + name_prompt
 
 
-
 prompts = {
     "system_general": get_system_prompt_with_name,  # función para personalizar
 }
-

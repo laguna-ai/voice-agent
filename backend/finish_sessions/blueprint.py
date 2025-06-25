@@ -34,6 +34,6 @@ def finish_sessions(
         for s in sessions_to_finish:
             analysis = get_insights(s)
             logging.info("Analysis of session %s: %s", s[0], analysis)
-        
+
             finish_session(conn, s)
             logging.info("Session %s finished", s[0])

@@ -21,5 +21,3 @@ def get_completion_from_messages(messages, model=deployment, temperature=0):
         temperature=temperature,
     )
     return response.choices[0].message.content, response.usage
-
-

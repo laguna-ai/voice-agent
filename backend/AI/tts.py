@@ -2,7 +2,10 @@ import requests
 from typing import Optional
 from configuration import config_AOAI
 
-def text_to_speech_azure(text: str, voice: str = "alloy", model: str = None) -> Optional[bytes]:
+
+def text_to_speech_azure(
+    text: str, voice: str = "alloy", model: str = None
+) -> Optional[bytes]:
     """
     Convierte texto a audio usando Azure OpenAI TTS.
     Args:
@@ -21,17 +24,12 @@ def text_to_speech_azure(text: str, voice: str = "alloy", model: str = None) -> 
         raise ValueError("Faltan variables de entorno AOAI_TTS_ENDPOINT o AOAI_TTS_KEY")
 
     url = f"{endpoint}/openai/deployments/{tts_deployment}/audio/speech?api-version={api_version}"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"
-    }
-    payload = {
-        "model": tts_deployment,
-        "input": text,
-        "voice": voice
-    }
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
+    payload = {"model": tts_deployment, "input": text, "voice": voice}
     response = requests.post(url, headers=headers, json=payload, timeout=60)
     if response.status_code == 200:
         return response.content
     else:
-        raise requests.exceptions.HTTPError(f"Error en TTS Azure: {response.status_code} - {response.text}")
+        raise requests.exceptions.HTTPError(
+            f"Error en TTS Azure: {response.status_code} - {response.text}"
+        )
