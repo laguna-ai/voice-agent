@@ -34,4 +34,4 @@ def text_to_speech_azure(text: str, voice: str = "alloy", model: str = None) -> 
     if response.status_code == 200:
         return response.content
     else:
-        raise Exception(f"Error en TTS Azure: {response.status_code} - {response.text}")
+        raise requests.exceptions.HTTPError(f"Error en TTS Azure: {response.status_code} - {response.text}")
