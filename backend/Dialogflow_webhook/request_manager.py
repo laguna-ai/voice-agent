@@ -1,5 +1,5 @@
 import logging
-from RAG.SysPrompt import build_sysPrompt
+from AI.SysPrompt import build_sysPrompt
 import copy
 import azure.functions as func
 import json
