@@ -30,7 +30,7 @@ def text_to_speech_azure(text: str, voice: str = "alloy", model: str = None) -> 
         "input": text,
         "voice": voice
     }
-    response = requests.post(url, headers=headers, json=payload)
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
     if response.status_code == 200:
         return response.content
     else:
