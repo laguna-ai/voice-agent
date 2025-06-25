@@ -3,9 +3,7 @@ from typing import Optional
 from configuration import config_AOAI
 
 
-def text_to_speech_azure(
-    text: str, voice: str = "alloy"
-) -> Optional[bytes]:
+def text_to_speech_azure(text: str, voice: str = "alloy") -> Optional[bytes]:
     """
     Convierte texto a audio usando Azure OpenAI TTS.
     Args:

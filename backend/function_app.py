@@ -44,15 +44,17 @@ def transcribe(req: func.HttpRequest) -> func.HttpResponse:
     try:
         audio_file = req.files.get("file")
         if not audio_file:
-            return func.HttpResponse("No se proporcionó archivo de audio.", status_code=400)
+            return func.HttpResponse(
+                "No se proporcionó archivo de audio.", status_code=400
+            )
         texto = transcribe_audio_azure(audio_file)
         return func.HttpResponse(texto, status_code=200)
     except KeyError:
-        return func.HttpResponse("Campo 'file' no encontrado en la solicitud.", status_code=400)
+        return func.HttpResponse(
+            "Campo 'file' no encontrado en la solicitud.", status_code=400
+        )
     except ValueError as ve:
         return func.HttpResponse(f"Error de valor: {str(ve)}", status_code=400)
-    except Exception as e:
-        return func.HttpResponse(f"Error en transcripción: {str(e)}", status_code=500)
 
 
 @app.route(route="tts", methods=["POST"])
@@ -67,14 +69,10 @@ def tts(req: func.HttpRequest) -> func.HttpResponse:
         if not text:
             return func.HttpResponse("No se proporcionó texto.", status_code=400)
         audio = text_to_speech_azure(text)
-        return func.HttpResponse(
-            audio,
-            status_code=200,
-            mimetype="audio/mpeg"
-        )
+        return func.HttpResponse(audio, status_code=200, mimetype="audio/mpeg")
     except KeyError:
-        return func.HttpResponse("Campo 'text' no encontrado en la solicitud.", status_code=400)
+        return func.HttpResponse(
+            "Campo 'text' no encontrado en la solicitud.", status_code=400
+        )
     except ValueError as ve:
         return func.HttpResponse(f"Error de valor: {str(ve)}", status_code=400)
-    except Exception as e:
-        return func.HttpResponse(f"Error en TTS: {str(e)}", status_code=500)
