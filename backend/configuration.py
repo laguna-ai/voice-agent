@@ -5,16 +5,31 @@ config_postgres = {
     "password": os.environ["POSTGRES_PASS"],
     "dbname": "citus",
     "user": "citus",
-    "host": "c-learnia-postgres.mzd54eshacvnl4.postgres.cosmos.azure.com",
+    "host": "c-voice-db.sl2ylaoczcx2yr.postgres.cosmos.azure.com",
     "port": "5432",
 }
 
-# Configuración de Azure OpenAI
-config_OAI = {
-    "llm": "gpt-4o",
-    "sum": "gpt-4o-mini",
-    "embeddings": "text-embedding-3-small",
-    "key": os.environ["OPENAI_API_KEY"],
+
+# Configuración para Azure OpenAI (AOAI) anidada por modelo
+config_AOAI = {
+    "llm": {
+        "endpoint": "https://juana-mcaz6bvc-swedencentral.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview",
+        "key": os.getenv("AOAI_KEY"),
+        "deployment": "gpt-4o",
+        "api_version": "2025-01-01-preview",
+    },
+    "whisper": {
+        "endpoint": "https://juana-mcaz6bvc-swedencentral.cognitiveservices.azure.com/openai/deployments/whisper/audio/translations?api-version=2024-06-01",
+        "key": os.getenv("AOAI_KEY"),
+        "deployment": "whisper",
+        "api_version": "2024-06-01",
+    },
+    "tts": {
+        "endpoint_root": "https://juana-mcaz6bvc-swedencentral.cognitiveservices.azure.com",
+        "key": os.getenv("AOAI_KEY"),
+        "deployment": "tts",
+        "api_version": "2025-03-01-preview",
+    },
 }
 
 
