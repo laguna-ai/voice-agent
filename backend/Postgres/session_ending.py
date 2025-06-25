@@ -22,7 +22,7 @@ def get_sessions_to_finish(conn):
     return sessions_to_update
 
 
-def finish_session(conn, session):
+def finish_session(conn, session, analysis):
     ID = session[0]
     history = session[1]
     created_at = session[2]
@@ -30,14 +30,15 @@ def finish_session(conn, session):
 
     with conn.cursor() as cur:
         query = """
-        INSERT INTO closed_sessions (id, history, closed_at, created_at)
-        VALUES (%s, %s, to_timestamp(%s), %s);
+        INSERT INTO closed_sessions (id, history, analysis, closed_at, created_at)
+        VALUES (%s, %s, %s, to_timestamp(%s), %s);
         """
         cur.execute(
             query,
             (
                 ID + "_" + str(uuid.uuid4()),
                 json.dumps(history),
+                json.dumps(analysis),
                 closed_at,
                 created_at,
             ),
