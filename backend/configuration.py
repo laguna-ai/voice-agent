@@ -30,6 +30,12 @@ config_AOAI = {
         "deployment": "tts",
         "api_version": "2025-03-01-preview",
     },
+    "summarization": {
+        "endpoint": "https://juana-mcaz6bvc-swedencentral.cognitiveservices.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2025-01-01-preview",
+        "key": os.getenv("AOAI_KEY"),
+        "deployment": "gpt-4o-mini",
+        "api_version": "2025-01-01-preview",
+    },
 }
 
 

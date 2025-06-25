@@ -1,19 +1,25 @@
-import openai
-from configuration import config_OAI
+from openai import AzureOpenAI
+from configuration import config_AOAI
 
-# Configura tu clave de API de OpenAI aquí o usa variables de entorno
-openai.api_key = config_OAI["key"]
+# Configuración para sumarización con Azure OpenAI
+summ_cfg = config_AOAI["summarization"]
+endpoint = summ_cfg["endpoint"]
+subscription_key = summ_cfg["key"]
+api_version = summ_cfg["api_version"]
+deployment = summ_cfg["deployment"]
+
+client = AzureOpenAI(
+    api_version=api_version,
+    azure_endpoint=endpoint,
+    api_key=subscription_key,
+)
 
 
-# ChatGPT completion
-llm_name = config_OAI["sum"]
-
-
-def get_completion_from_messages(messages, model=llm_name, temperature=0):
-    response = openai.chat.completions.create(
+def get_completion_from_messages(messages, model=deployment, temperature=0):
+    response = client.chat.completions.create(
         model=model,
         messages=messages,
-        temperature=temperature,  # this is the degree of randomness of the model's output
+        temperature=temperature,
         response_format={"type": "json_object"},
     )
     return response.choices[0].message.content
