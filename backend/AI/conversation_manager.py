@@ -1,6 +1,5 @@
 from azure.core.exceptions import HttpResponseError
 from .Chat_Response import get_completion_from_messages
-import logging
 
 def respond_message( message, History):
     History.append({"role": "user", "content": message})
