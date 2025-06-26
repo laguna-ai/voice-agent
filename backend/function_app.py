@@ -42,7 +42,7 @@ def transcribe(req: func.HttpRequest) -> func.HttpResponse:
     Endpoint para transcribir audio usando Azure OpenAI Whisper.
     Espera un JSON con el campo 'audio' en base64.
     """
-    
+
     try:
         req_body = req.get_json()
         audio_base64 = req_body.get("audio")
@@ -62,11 +62,8 @@ def transcribe(req: func.HttpRequest) -> func.HttpResponse:
             "Campo 'audio' no encontrado en la solicitud.", status_code=400
         )
     except ValueError as ve:
-        logging.info(f"Error de valor: {str(ve)}")
+        logging.info("Error de valor %s", ve)
         return func.HttpResponse(f"Error de valor: {str(ve)}", status_code=400)
-    except Exception as e:
-        logging.info(f"Error inesperado: {str(e)}")
-        return func.HttpResponse(f"Error inesperado: {str(e)}", status_code=500)
 
 
 @app.route(route="tts", methods=["POST"])
