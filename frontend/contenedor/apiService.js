@@ -82,11 +82,18 @@ export async function sendMessageToBot(userMessage, sessionId, apiUrl, chatHisto
 }
 
 export async function sendAudioToWhisper(audioBlob, whisperUrl) {
-    const formData = new FormData();
-    formData.append('file', audioBlob, 'audio.webm');
+    // Convertir el audio a base64
+    const toBase64 = (blob) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+    const audioBase64 = await toBase64(audioBlob);
     const response = await fetch(whisperUrl, {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audio: audioBase64 })
     });
     if (!response.ok) {
         throw new Error('Error al transcribir audio');

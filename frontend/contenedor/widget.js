@@ -23,9 +23,11 @@ export function initializeWidget() {
     let isTyping = false;
     let suggestionsVisible = false;
     let chatHistory = [];
-    const CHATBOT_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/webhook';
-    const TTS_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/tts';
-    const WHISPER_API_URL = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api/whisper';
+    //const URL_PREFIX = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api';
+    const URL_PREFIX = 'http://localhost:7071/api'
+    const CHATBOT_API_URL = `${URL_PREFIX}/webhook`;
+    const TTS_API_URL = `${URL_PREFIX}/tts`;
+    const WHISPER_API_URL = `${URL_PREFIX}/transcribe`;
     
     const sessionId = getOrGenerateSessionId();
     
@@ -88,10 +90,17 @@ export function initializeWidget() {
     // --- Lógica de micrófono ---
     if (micButton) {
         micButton.addEventListener('click', async function() {
+            const micIcon = micButton.querySelector('i');
             if (mediaRecorder && mediaRecorder.state === 'recording') {
                 mediaRecorder.stop();
                 micButton.classList.remove('bg-red-600');
+                micButton.classList.remove('hover:bg-red-400');
                 micButton.classList.add('bg-primary-500');
+                micButton.classList.add('hover:bg-primary-600');
+                if (micIcon) {
+                    micIcon.classList.remove('fa-stop');
+                    micIcon.classList.add('fa-microphone');
+                }
                 return;
             }
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -107,13 +116,11 @@ export function initializeWidget() {
                 };
                 mediaRecorder.onstop = async () => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    // Mostrar mensaje de "transcribiendo..."
-                    addMessage('Transcribiendo audio...', 'user', chatMessages);
+                    addMessage('Procesando audio...', 'user', chatMessages);
                     showTypingIndicator(typingIndicator, chatMessages);
                     isTyping = true;
                     try {
                         const transcribedText = await sendAudioToWhisper(audioBlob, WHISPER_API_URL);
-                        // El texto transcrito se procesa como input normal
                         addMessage(transcribedText, 'user', chatMessages);
                         await handleBotResponse(transcribedText);
                     } catch (err) {
@@ -125,7 +132,13 @@ export function initializeWidget() {
                 };
                 mediaRecorder.start();
                 micButton.classList.remove('bg-primary-500');
+                micButton.classList.remove('hover:bg-primary-600');
                 micButton.classList.add('bg-red-600');
+                micButton.classList.add('hover:bg-red-400');
+                if (micIcon) {
+                    micIcon.classList.remove('fa-microphone');
+                    micIcon.classList.add('fa-stop');
+                }
             } catch (err) {
                 alert('No se pudo acceder al micrófono.');
             }

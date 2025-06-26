@@ -10,7 +10,8 @@ from Dialogflow_webhook.request_manager import (
 )
 from AI.whisper import transcribe_audio_azure
 from AI.tts import text_to_speech_azure
-
+import base64
+import io
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 app.register_blueprint(blueprint)
@@ -39,22 +40,33 @@ def webhook(req: func.HttpRequest) -> func.HttpResponse:
 def transcribe(req: func.HttpRequest) -> func.HttpResponse:
     """
     Endpoint para transcribir audio usando Azure OpenAI Whisper.
-    Espera un archivo de audio en el campo 'file' del formulario.
+    Espera un JSON con el campo 'audio' en base64.
     """
+    
     try:
-        audio_file = req.files.get("file")
-        if not audio_file:
+        req_body = req.get_json()
+        audio_base64 = req_body.get("audio")
+        if not audio_base64:
+            logging.info("No se proporcionó audio en base64.")
             return func.HttpResponse(
-                "No se proporcionó archivo de audio.", status_code=400
+                "No se proporcionó audio en base64.", status_code=400
             )
-        texto = transcribe_audio_azure(audio_file)
+        audio_binary = base64.b64decode(audio_base64)
+        audio_stream = io.BytesIO(audio_binary)
+        audio_stream.name = "audio.webm"  # O "audio.wav" si grabas en wav
+        texto = transcribe_audio_azure(audio_stream)
         return func.HttpResponse(texto, status_code=200)
     except KeyError:
+        logging.info("Campo 'audio' no encontrado en la solicitud.")
         return func.HttpResponse(
-            "Campo 'file' no encontrado en la solicitud.", status_code=400
+            "Campo 'audio' no encontrado en la solicitud.", status_code=400
         )
     except ValueError as ve:
+        logging.info(f"Error de valor: {str(ve)}")
         return func.HttpResponse(f"Error de valor: {str(ve)}", status_code=400)
+    except Exception as e:
+        logging.info(f"Error inesperado: {str(e)}")
+        return func.HttpResponse(f"Error inesperado: {str(e)}", status_code=500)
 
 
 @app.route(route="tts", methods=["POST"])

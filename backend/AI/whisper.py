@@ -22,6 +22,6 @@ def transcribe_audio_azure(audio_file: IO, deployment_id: str = None) -> str:
         api_key=api_key, api_version=api_version, azure_endpoint=endpoint
     )
     result = client.audio.transcriptions.create(
-        file=audio_file, model=whisper_deployment
+        file=audio_file, model=whisper_deployment, language="es"
     )
     return result.text
