@@ -23,8 +23,8 @@ export function initializeWidget() {
     let isTyping = false;
     let suggestionsVisible = false;
     let chatHistory = [];
-    //const URL_PREFIX = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api';
-    const URL_PREFIX = 'http://localhost:7071/api'
+    const URL_PREFIX = 'https://funciones-voice-emg9ducuaya8cyb3.eastus-01.azurewebsites.net/api';
+    //const URL_PREFIX = 'http://localhost:7071/api'
     const CHATBOT_API_URL = `${URL_PREFIX}/webhook`;
     const TTS_API_URL = `${URL_PREFIX}/tts`;
     const WHISPER_API_URL = `${URL_PREFIX}/transcribe`;
