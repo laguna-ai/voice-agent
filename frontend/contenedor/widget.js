@@ -32,9 +32,9 @@ export function initializeWidget() {
     const sessionId = getOrGenerateSessionId();
     
     const initialMessages = [
-        '¡Bienvenido a tu experiencia Learnia! ¿Tienes dudas sobre el contenido, las actividades o la plataforma? Estoy para ti.',
-        '¡Hola! ¿Listo para aprender? Puedo ayudarte con preguntas sobre tus cursos, evaluaciones o cómo avanzar más rápido.',
-        '¡Hola! ¿Tienes preguntas sobre tu progreso, evaluaciones o próximas fechas clave? Pregúntame lo que quieras.'
+        '¡Bienvenido! ¿Tienes dudas sobre Laguna-ai, sus servicios o inteligencia artificial? Estoy para ti.',
+        '¡Hola! ¿Listo para descubrir cómo Laguna-ai puede ayudar a tu empresa? Pregúntame sobre IA, soluciones o soporte.',
+        '¡Hola! ¿Tienes preguntas sobre Laguna-ai, sus productos o cómo implementamos IA? Pregúntame lo que quieras.'
     ];
 
     // Selecciona uno al azar

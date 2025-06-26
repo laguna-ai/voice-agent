@@ -1,7 +1,7 @@
 /* Estilos específicos para el widget */
 #chatbot-window {
     height: 500px;
-    border: 1px solid #e2e8f0; /* Borde sutil */
+    border: 2.5px solid #081e35; /* oxford_blue 500, azul oscuro más notorio */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra similar a las cards */
 }
 
@@ -27,7 +27,7 @@
 .typing-indicator span {
     animation: bounce 1.5s infinite ease-in-out;
     display: inline-block;
-    color: #7c3aed; /* Color morado para los puntos */
+    color: #1f75d1; /* oxford_blue 700 */
 }
 
 .typing-indicator span:nth-child(2) {
@@ -47,37 +47,83 @@
     }
 }
 
-/* Custom scrollbar - Actualizada a morado */
+/* Custom scrollbar - gris claro */
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(245, 243, 255, 0.5); /* primary-50 con transparencia */
+    background: #f3f4f6; /* gris muy claro */
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(124, 58, 237, 0.5); /* secondary-600 con transparencia */
+    background: #e5e7eb; /* gris claro */
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 58, 237, 0.7); /* secondary-600 más intenso */
+    background: #bfcbed; /* gris azulado suave para hover */
 }
 
-/* Gradient background - Actualizado a morado */
+/* Fondo del widget: gris muy claro */
 .gradient-bg {
-    background: linear-gradient(135deg, rgba(245, 243, 255, 0.9) 0%, rgba(237, 233, 254, 0.9) 100%);
+    background: #f3f4f6;
 }
 
-/* Nuevo: Estilo para botones de sugerencias */
+/* Borde del widget: gris claro armónico */
+#chatbot-window {
+    border: 1px solid #e5e7eb; /* gris claro */
+}
+
+/* Texto "En línea": gris medio de la paleta para contraste */
+.text-primary-100, .text-primary-500, .text-primary-600, .text-primary-700, .text-primary-800 {
+    color: #7eb9db !important; /* prussian_blue 800, armónico y visible */
+}
+
+/* Placeholder del input: gris medio, NO azul claro */
+.placeholder-primary-300::placeholder, #user-input::placeholder {
+    color: #bfcbed !important; /* prussian_blue 900, suave y armónico */
+    opacity: 1;
+}
+
+/* Input y borde: gris claro */
+#user-input, .border-primary-200 {
+    border-color: #e5e7eb !important;
+}
+
+/* Botones de sugerencias: gris claro y azul oscuro */
 .suggestion-btn {
-    background: #f5f3ff; /* primary-50 */
-    border: 1px solid #ddd6fe; /* primary-200 */
-    color: #7c3aed; /* secondary-600 */
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #7eb9db; /* prussian_blue 800, igual que 'En línea' */
 }
 
 .suggestion-btn:hover {
-    background: #ede9fe; /* primary-100 */
+    background: #e5e7eb;
+    color: #081e35;
+}
+
+/* Estilos para el texto de powered-by */
+.powered-by {
+    text-align: center;
+    padding: 20px;
+    color: #7eb9db; /* prussian_blue 800, igual que 'En línea' */
+    font-size: 0.9rem;
+    background: #f3f4f6;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Estilos para las burbujas de chat */
+.chat-messages .bg-white,
+#chat-messages .bg-white,
+#chat-messages .rounded-lg {
+    background: #fff !important;
+    color: #1f2937 !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+#chat-messages .text-gray-800 {
+    color: #1f2937 !important;
 }
