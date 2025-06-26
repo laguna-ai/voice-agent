@@ -24,7 +24,8 @@ def transcribe_audio_azure(audio_file: IO, deployment_id: str = None) -> str:
     result = client.audio.transcriptions.create(
         file=audio_file, 
         model=whisper_deployment, 
-        language="es"
+        language="es",
+        prompt="Transcribe the audio to Spanish text."
     )
     # logging  the result for debugging purposes
     logging.info("Transcription result: %s", result)

@@ -94,13 +94,14 @@
 
 /* Botones de sugerencias: gris claro y azul oscuro */
 .suggestion-btn {
-    background: #f3f4f6;
+    background: #fff;
     border: 1px solid #e5e7eb;
-    color: #7eb9db; /* prussian_blue 800, igual que 'En línea' */
+    color: #1f2937;
+    box-shadow: none;
 }
 
 .suggestion-btn:hover {
-    background: #e5e7eb;
+    background: #f3f4f6;
     color: #081e35;
 }
 
@@ -126,4 +127,12 @@
 
 #chat-messages .text-gray-800 {
     color: #1f2937 !important;
+}
+
+/* Estilos para el indicador de escritura */
+.typing-indicator {
+    background: #fff !important;
+    border: 1px solid #e5e7eb !important;
+    color: #1f2937 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
